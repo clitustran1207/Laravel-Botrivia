@@ -19,7 +19,7 @@ class BotHandler implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Messaging $messaging)
     {
         $this->messaging = $messaging;
     }

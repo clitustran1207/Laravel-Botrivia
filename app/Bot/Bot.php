@@ -25,7 +25,7 @@ class Bot {
                     "answer" => $matches[0]
                 ],
                 "user_id" => $this->messaging->getSenderId()
-        ];
+            ];
         } else if (preg_match("/^new|next\$/i", $text, $matches)) {
             //"new" or "next" requests a new question
             return [

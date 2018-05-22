@@ -13,7 +13,7 @@ class Trivia {
     private $solution;
     private $userId;
 
-    public function __construct(array $data)
+    public function __construct(array $data, $userId)
     {
         $this->question = $data["question"];
         $answer = $data["correct_answer"];
@@ -38,20 +38,6 @@ class Trivia {
     
         return new Trivia($result, $userId);
     }
-    public function toMessage()
-    {
-        //compose message
-        $response = "Question: $this->question.\nOptions:";
-        $letters = ["a", "b", "c", "d"];
-        foreach ($this->options as $i => $option) {
-            $response.= "\n{$letters[$i]}: $option";
-            if($this->solution == $option) {
-            Cache::forever("solution.{$this->userId}", $letters[$i]);
-            }
-        }
-
-        return ["text" => $response];
-    }
     public static function checkAnswer($answer, $userId)
     {
         $solution = Cache::get("solution.$userId");
@@ -63,5 +49,18 @@ class Trivia {
         //clear solution
         Cache::forget("solution.$userId");
         return $response;
+    }
+    public function toMessage()
+    {
+        //compose message
+        $response = "Question: $this->question.\nOptions:";
+        $letters = ["a", "b", "c", "d"];
+        foreach ($this->options as $i => $option) {
+            $response.= "\n{$letters[$i]}: $option";
+            if($this->solution == $option) {
+            Cache::forever("solution.{$this->userId}", $letters[$i]);
+            }
+        }
+        return ["text" => $response];
     }
 }
